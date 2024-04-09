@@ -9,8 +9,10 @@ class Histogram {
 private:
     double m_leftLimit, m_rightLimit;
     int m_numberOfBins;
+    double m_binWidth;
 
     std::vector<double> m_binEdges;
+    std::vector<size_t> m_binCounts;
 
     matplot::figure_handle m_figure;
     matplot::axes_handle m_axes;
@@ -20,7 +22,9 @@ private:
     }
 
     void addHistogramPlot(const std::vector<double>& values) {
-        m_axes->hist(values, m_binEdges)->normalization(matplot::histogram::normalization::pdf);
+        auto hist = m_axes->hist(values, m_binEdges);
+        m_binCounts = hist->histogram_count(values, m_binEdges);
+        hist->normalization(matplot::histogram::normalization::pdf);
     }
 
 
@@ -33,10 +37,10 @@ public:
         m_rightLimit = std::floor(*std::max_element(values.begin(), values.end())) + 1;
         // TODO: Handle coefficient
         m_numberOfBins = 5 * static_cast<int>(std::floor(std::log(sampleSize)));
-        double binWidth = (m_rightLimit - m_leftLimit) / m_numberOfBins;
+        m_binWidth = (m_rightLimit - m_leftLimit) / m_numberOfBins;
         
         m_binEdges.push_back(m_leftLimit);
-        for (int i = 0; i < m_numberOfBins; i++) m_binEdges.push_back(m_binEdges.back() + binWidth);
+        for (int i = 0; i < m_numberOfBins; i++) m_binEdges.push_back(m_binEdges.back() + m_binWidth);
 
         m_axes->hold(true);
         m_axes->xlim({ m_leftLimit, m_rightLimit });
