@@ -32,14 +32,13 @@ private:
 
 
 public:
-    Histogram(const std::vector<double>& values, std::function<double(double)> pdf, const std::string& title) :
+    Histogram(const std::vector<double>& values, std::function<double(double)> pdf, const std::string& title, double binsCoefficient) :
         m_figure{ matplot::figure(true) }, m_axes{ m_figure->add_axes() }
     {
         m_sampleSize = static_cast<int>(values.size());
         m_leftLimit = std::floor(*std::min_element(values.begin(), values.end()));
         m_rightLimit = std::floor(*std::max_element(values.begin(), values.end())) + 1;
-        // TODO: Handle coefficient
-        m_numberOfBins = 5 * static_cast<int>(std::floor(std::log(m_sampleSize)));
+        m_numberOfBins = binsCoefficient * static_cast<int>(std::floor(std::log(m_sampleSize)));
         m_binWidth = (m_rightLimit - m_leftLimit) / m_numberOfBins;
         
         m_binEdges.push_back(m_leftLimit);

@@ -62,7 +62,7 @@ public:
 		for (const auto& [paramName, paramValue] : params) {
 			histogramTitle += std::format(", {} = {}", paramName, paramValue);
 		}
-		Histogram histRenderer(sample, [&](double x) { return distribution->probability(x); }, histogramTitle );
+		Histogram histRenderer(sample, [&](double x) { return distribution->probability(x); }, histogramTitle, m_config["binsCoefficient"]);
 
 		std::string imgFilePath = std::format("img/{}_sampleSize{}_seed{}", distributionName, sampleSize, seed);
 		for (const auto& [paramName, paramValue] : params) {

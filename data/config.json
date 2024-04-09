@@ -11,5 +11,6 @@
 	},
 	"seed": 0,
 	"sampleSize": 10000,
-	"distribution": "exponential"
+	"distribution": "exponential",
+	"binsCoefficient": 2
 }
