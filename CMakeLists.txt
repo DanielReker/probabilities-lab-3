@@ -15,6 +15,7 @@ add_executable (ProbabilitiesLab3
     "src/View/Histogram.h"
     "src/Model/ContinuousDistribution.h"
     "src/Model/IDistribution.h"
+    "src/Model/ExponentialDistribution.h"
 )
 
 set_target_properties(ProbabilitiesLab3 PROPERTIES
@@ -24,13 +25,17 @@ set_target_properties(ProbabilitiesLab3 PROPERTIES
 )
 
 
+# Import matplot++
 find_package(Matplot++ REQUIRED)
 target_link_libraries(ProbabilitiesLab3 PRIVATE Matplot++::matplot)
 
 
+# Import nlohmann/json
 include(FetchContent)
-
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
 FetchContent_MakeAvailable(json)
-
 target_link_libraries(ProbabilitiesLab3 PRIVATE nlohmann_json::nlohmann_json)
+
+
+# Copy config.json to bin directory
+configure_file(data/config.json config.json COPYONLY)

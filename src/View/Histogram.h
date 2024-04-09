@@ -20,7 +20,7 @@ private:
     }
 
     void addHistogramPlot(const std::vector<double>& values) {
-        auto hist = m_axes->hist(values, m_binEdges)->normalization(matplot::histogram::normalization::pdf);
+        m_axes->hist(values, m_binEdges)->normalization(matplot::histogram::normalization::pdf);
     }
 
 

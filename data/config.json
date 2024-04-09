@@ -1,0 +1,15 @@
+{
+	"availableDistributions": {
+		"exponential": {
+			"name": "Exponential distribution"
+		}
+	},
+	"params": {
+		"exponential": {
+			"lambda": 1
+		}
+	},
+	"seed": 0,
+	"sampleSize": 10000,
+	"distribution": "exponential"
+}
