@@ -42,6 +42,12 @@ private:
 		return sample;
 	}
 
+	Seed loadSeed() {
+		Seed seed = m_config["seed"];
+		if (seed == 0) seed = std::random_device{}();
+		return seed;
+	}
+
 
 public:
 	Controller(const std::string& configFile) :
@@ -52,7 +58,7 @@ public:
 		std::map<std::string, double> params =
 			m_config["params"][distributionName].get<std::map<std::string, double>>();
 		int sampleSize = m_config["sampleSize"];
-		Seed seed = m_config["seed"];
+		Seed seed = loadSeed();
 
 		std::unique_ptr<IDistributuion<double>> distribution = getDistribution(distributionName, params, seed);
 		auto sample = generateSample(distribution.get(), sampleSize);
