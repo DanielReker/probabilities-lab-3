@@ -56,8 +56,20 @@ public:
 		std::unique_ptr<IDistributuion<double>> distribution = getDistribution(distributionName, params, seed);
 		auto sample = generateSample(distribution.get(), sampleSize);
 
-		Histogram histRenderer(sample, [&](double x) { return distribution->probability(x); } );
 
+		std::string histogramTitle = std::format("{}, samples = {}", distributionName, sampleSize);
+		for (const auto& [paramName, paramValue] : params) {
+			histogramTitle += std::format(", {} = {}", paramName, paramValue);
+		}
+		Histogram histRenderer(sample, [&](double x) { return distribution->probability(x); }, histogramTitle );
+
+		std::string imgFilePath = std::format("img/{}_sampleSize{}_seed{}", distributionName, sampleSize, seed);
+		for (const auto& [paramName, paramValue] : params) {
+			imgFilePath += std::format("_{}{}", paramName, paramValue);
+		}
+		imgFilePath += "/histogram.pdf";
+
+		histRenderer.save(imgFilePath);
 		histRenderer.show();
 	}
 };

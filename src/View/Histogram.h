@@ -29,7 +29,7 @@ private:
 
 
 public:
-    Histogram(const std::vector<double>& values, std::function<double(double)> pdf) :
+    Histogram(const std::vector<double>& values, std::function<double(double)> pdf, const std::string& title) :
         m_figure{ matplot::figure(true) }, m_axes{ m_figure->add_axes() }
     {
         int sampleSize = static_cast<int>(values.size());
@@ -43,6 +43,7 @@ public:
         for (int i = 0; i < m_numberOfBins; i++) m_binEdges.push_back(m_binEdges.back() + m_binWidth);
 
         m_axes->hold(true);
+        m_axes->title(title);
         m_axes->xlim({ m_leftLimit, m_rightLimit });
         addHistogramPlot(values);
         addPlotPDF(pdf);
@@ -52,5 +53,7 @@ public:
         m_figure->show();
     }
 
-    // TODO: Add save()
+    void save(const std::string& fileName) {
+        m_figure->save(fileName);
+    }
 };
