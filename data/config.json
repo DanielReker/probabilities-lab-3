@@ -6,10 +6,10 @@
 	},
 	"params": {
 		"exponential": {
-			"lambda": 1
+			"lambda": 5
 		}
 	},
-	"seed": 0,
+	"seed": 8,
 	"sampleSize": 10000,
 	"distribution": "exponential",
 	"binsCoefficient": 2
