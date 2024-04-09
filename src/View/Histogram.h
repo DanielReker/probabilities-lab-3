@@ -67,7 +67,7 @@ public:
             const double& to = *(edgeIt + 1);
             const size_t& count = *countIt;
 
-            out << std::format("[{:.4f}; {:.4f}) & {:.10f} & {:.10f}\\\\\n",
+            out << std::format("\\,[{:.9f}; {:.9f}) & {:.15f} & {:.15f}\\\\\n",
                 from, to, static_cast<double>(count) / m_sampleSize, CDF(to) - CDF(from));
 
             edgeIt++;
