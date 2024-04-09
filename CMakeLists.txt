@@ -25,6 +25,12 @@ set_target_properties(ProbabilitiesLab3 PROPERTIES
 
 
 find_package(Matplot++ REQUIRED)
-target_link_libraries(ProbabilitiesLab3 PUBLIC Matplot++::matplot)
+target_link_libraries(ProbabilitiesLab3 PRIVATE Matplot++::matplot)
 
 
+include(FetchContent)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
+target_link_libraries(ProbabilitiesLab3 PRIVATE nlohmann_json::nlohmann_json)
