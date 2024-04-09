@@ -26,8 +26,9 @@ private:
 		if (name == "exponential") {
 			const double& lambda = params.at("lambda");
 			auto PDF = [&](double x) { return lambda * std::exp(-lambda * x); };
+			auto CDF = [&](double x) { return 1 - std::exp(-lambda * x); };
 			std::function<double(double)> inverseCDF = [&](double gamma) { return -std::log(1 - gamma) / lambda; };
-			return std::make_unique<ContinuousDistribution<double>>(inverseCDF, PDF, seed);
+			return std::make_unique<ContinuousDistribution<double>>(inverseCDF, PDF, CDF, seed);
 		} else throw std::invalid_argument("Unknown distribution");
 		
 	}
@@ -69,6 +70,7 @@ public:
 		}
 		imgFilePath += "/histogram.pdf";
 
+		histRenderer.printTable(std::cout, [&](double x) { return distribution->cumulativeProbability(x); });
 		histRenderer.save(imgFilePath);
 		histRenderer.show();
 	}

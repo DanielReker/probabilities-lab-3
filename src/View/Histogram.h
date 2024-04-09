@@ -1,6 +1,8 @@
 #pragma once
 
 #include <functional>
+#include <iomanip>
+#include <format>
 
 #include <matplot/matplot.h>
 
@@ -10,6 +12,7 @@ private:
     double m_leftLimit, m_rightLimit;
     int m_numberOfBins;
     double m_binWidth;
+    int m_sampleSize;
 
     std::vector<double> m_binEdges;
     std::vector<size_t> m_binCounts;
@@ -32,11 +35,11 @@ public:
     Histogram(const std::vector<double>& values, std::function<double(double)> pdf, const std::string& title) :
         m_figure{ matplot::figure(true) }, m_axes{ m_figure->add_axes() }
     {
-        int sampleSize = static_cast<int>(values.size());
+        m_sampleSize = static_cast<int>(values.size());
         m_leftLimit = std::floor(*std::min_element(values.begin(), values.end()));
         m_rightLimit = std::floor(*std::max_element(values.begin(), values.end())) + 1;
         // TODO: Handle coefficient
-        m_numberOfBins = 5 * static_cast<int>(std::floor(std::log(sampleSize)));
+        m_numberOfBins = 5 * static_cast<int>(std::floor(std::log(m_sampleSize)));
         m_binWidth = (m_rightLimit - m_leftLimit) / m_numberOfBins;
         
         m_binEdges.push_back(m_leftLimit);
@@ -55,5 +58,21 @@ public:
 
     void save(const std::string& fileName) {
         m_figure->save(fileName);
+    }
+
+    void printTable(std::ostream& out, std::function<double(double)> CDF) {
+        auto edgeIt = m_binEdges.begin();
+        auto countIt = m_binCounts.begin();
+        for (int bin = 0; bin < m_numberOfBins; bin++) {
+            const double& from = *edgeIt;
+            const double& to = *(edgeIt + 1);
+            const size_t& count = *countIt;
+
+            out << std::format("[{:.4f}; {:.4f}) & {:.10f} & {:.10f}\\\\\n",
+                from, to, static_cast<double>(count) / m_sampleSize, CDF(to) - CDF(from));
+
+            edgeIt++;
+            countIt++;
+        }
     }
 };

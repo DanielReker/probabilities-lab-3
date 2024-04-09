@@ -13,13 +13,14 @@ class ContinuousDistribution : public IDistributuion<Float> {
 protected:
 	Function m_inverseCDF;
 	Function m_PDF;
+	Function m_CDF;
 
 	std::mt19937_64 m_randomGenerator;
 	std::uniform_real_distribution<Float> m_uniformDistribution;
 
 public:
-	ContinuousDistribution(Function inverseCDF, Function PDF, Seed seed) :
-		m_inverseCDF{ inverseCDF }, m_PDF{ PDF },
+	ContinuousDistribution(Function inverseCDF, Function PDF, Function CDF, Seed seed) :
+		m_inverseCDF{ inverseCDF }, m_PDF{ PDF }, m_CDF{ CDF },
 		m_randomGenerator { seed }, m_uniformDistribution{ 0, 1 } { }
 
 	Float generateValue() override {
@@ -29,5 +30,9 @@ public:
 
 	Float probability(Float value) override {
 		return m_PDF(value);
+	}
+
+	Float cumulativeProbability(Float value) override {
+		return m_CDF(value);
 	}
 };
