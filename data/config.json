@@ -2,15 +2,30 @@
 	"availableDistributions": {
 		"exponential": {
 			"name": "Exponential distribution"
+		},
+		"normal": {
+			"name": "Normal distribution"
+		},
+		"normal_approximated": {
+			"name": "Approximated normal distribution"
 		}
 	},
 	"params": {
 		"exponential": {
 			"lambda": 5
+		},
+		"normal": {
+			"mu": 3,
+			"sigma": 2
+		},
+		"normal_approximated": {
+			"mu": 3,
+			"sigma": 2,
+			"n": 12
 		}
 	},
 	"seed": 8,
 	"sampleSize": 10000,
-	"distribution": "exponential",
+	"distribution": "normal",
 	"binsCoefficient": 2
 }

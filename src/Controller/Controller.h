@@ -6,6 +6,7 @@
 
 #include <map>
 #include <exception>
+#include <numbers>
 
 #include <nlohmann/json.hpp>
 
@@ -25,12 +26,29 @@ private:
 	) {
 		if (name == "exponential") {
 			const double& lambda = params.at("lambda");
-			auto PDF = [&](double x) { return lambda * std::exp(-lambda * x); };
-			auto CDF = [&](double x) { return 1 - std::exp(-lambda * x); };
-			auto inverseCDF = [&](double gamma) { return -std::log(gamma) / lambda; };
+			auto PDF = [=](double x) { return lambda * std::exp(-lambda * x); };
+			auto CDF = [=](double x) { return 1 - std::exp(-lambda * x); };
+			auto inverseCDF = [=](double gamma) { return -std::log(gamma) / lambda; };
 			return std::make_unique<ContinuousDistribution<double>>(inverseCDF, PDF, CDF, seed);
+		} else if (name == "normal") {
+			const double& mu = params.at("mu");
+			const double& sigma = params.at("sigma");
+			auto PDF = [=](double x) { return std::exp(-std::pow((x - mu) / sigma, 2) / 2) / (sigma * std::sqrt(2 * std::numbers::pi)); };
+			auto CDF = [=](double x) { return 0.5 * (1 + std::erf((x - mu) / (sigma * std::sqrt(2)))); };
+			auto inverseCDF = [=](double gamma) {
+				double left = -1e9, right = 1e9;
+				while (right - left > 1e-12) {
+					double mid = (right + left) / 2;
+					if (CDF(mid) - gamma <= 0) left = mid;
+					else right = mid;
+				}
+				return left;
+				};
+			return std::make_unique<ContinuousDistribution<double>>(inverseCDF, PDF, CDF, seed);
+		} else if (name == "normal_approximated") {
+			throw std::exception("Not implemented");
 		} else throw std::invalid_argument("Unknown distribution");
-		
+
 	}
 
 	std::vector<double> generateSample(IDistributuion<double>* distribution, int size) {
@@ -51,7 +69,8 @@ private:
 
 public:
 	Controller(const std::string& configFile) :
-		m_config{ json::parse(std::ifstream(configFile)) } {}
+		m_config{ json::parse(std::ifstream(configFile)) } {
+	}
 
 	void execute() {
 		std::string distributionName = m_config["distribution"];
