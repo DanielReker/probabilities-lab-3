@@ -38,7 +38,7 @@ public:
         m_sampleSize = static_cast<int>(values.size());
         m_leftLimit = std::floor(*std::min_element(values.begin(), values.end()));
         m_rightLimit = std::floor(*std::max_element(values.begin(), values.end())) + 1;
-        m_numberOfBins = binsCoefficient * static_cast<int>(std::floor(std::log(m_sampleSize)));
+        m_numberOfBins = static_cast<int>(binsCoefficient * std::floor(std::log(m_sampleSize)));
         m_binWidth = (m_rightLimit - m_leftLimit) / m_numberOfBins;
         
         m_binEdges.push_back(m_leftLimit);

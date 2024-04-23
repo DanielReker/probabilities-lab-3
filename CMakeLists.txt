@@ -16,7 +16,7 @@ add_executable (ProbabilitiesLab3
     "src/Model/ContinuousDistribution.h"
     "src/Model/IDistribution.h"
     "src/Model/ExponentialDistribution.h"
-)
+ "src/Model/NormalDistribution.h")
 
 set_target_properties(ProbabilitiesLab3 PROPERTIES
     CXX_STANDARD 23

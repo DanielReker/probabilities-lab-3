@@ -5,34 +5,21 @@
 
 #include "IDistribution.h"
 
+using Seed = unsigned long long;
+
 template<std::floating_point Float>
 class ContinuousDistribution : public IDistributuion<Float> {
-	using Function = std::function<Float(Float)>;
-	using Seed = unsigned long long;
-
-protected:
-	Function m_inverseCDF;
-	Function m_PDF;
-	Function m_CDF;
-
+private:
 	std::mt19937_64 m_randomGenerator;
 	std::uniform_real_distribution<Float> m_uniformDistribution;
 
-public:
-	ContinuousDistribution(Function inverseCDF, Function PDF, Function CDF, Seed seed) :
-		m_inverseCDF{ inverseCDF }, m_PDF{ PDF }, m_CDF{ CDF },
-		m_randomGenerator { seed }, m_uniformDistribution{ 0, 1 } { }
-
-	Float generateValue() override {
-		double value = m_inverseCDF(m_uniformDistribution(m_randomGenerator));
-		return value;
+protected:
+	ContinuousDistribution(Seed seed) :
+		m_randomGenerator{ seed }, m_uniformDistribution{ 0, 1 } {
 	}
 
-	Float probability(Float value) override {
-		return m_PDF(value);
-	}
-
-	Float cumulativeProbability(Float value) override {
-		return m_CDF(value);
+	// Generates uniformly distributed random float in range [0, 1]
+	Float generateUniformRandom() {
+		return m_uniformDistribution(m_randomGenerator);
 	}
 };
