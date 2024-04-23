@@ -4,6 +4,7 @@
 #include "View/Histogram.h"
 #include "Model/ExponentialDistribution.h"
 #include "Model/NormalDistribution.h"
+#include "Model/ApproximatedNormalDistribution.h"
 
 #include <map>
 #include <exception>
@@ -30,7 +31,9 @@ private:
 		} else if (name == "normal") {
 			return std::make_unique<NormalDistribution<double>>(seed, params.at("mu"), params.at("sigma"));
 		} else if (name == "normal_approximated") {
-			throw std::exception("Not implemented");
+			return std::make_unique<ApproximatedNormalDistribution<double>>(
+				seed, params.at("mu"), params.at("sigma"), params.at("n")
+			);
 		} else throw std::invalid_argument("Unknown distribution");
 	}
 

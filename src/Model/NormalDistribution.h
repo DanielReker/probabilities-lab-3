@@ -7,7 +7,7 @@
 
 template<std::floating_point Float>
 class NormalDistribution : public ContinuousDistribution<Float> {
-private:
+protected:
 	Float m_mu, m_sigma;
 
 
