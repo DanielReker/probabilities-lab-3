@@ -1,13 +1,13 @@
 {
-	"availableDistributions": {
+	"distributions": {
 		"exponential": {
-			"name": "Exponential distribution"
+			"name": "Exponential"
 		},
 		"normal": {
-			"name": "Normal distribution"
+			"name": "Normal"
 		},
-		"normal_approximated": {
-			"name": "Approximated normal distribution"
+		"normalApproximated": {
+			"name": "Normal (approximated)"
 		}
 	},
 	"params": {
@@ -18,14 +18,14 @@
 			"mu": 3,
 			"sigma": 2
 		},
-		"normal_approximated": {
+		"normalApproximated": {
 			"mu": 3,
 			"sigma": 2,
 			"n": 12
 		}
 	},
-	"seed": 8,
+	"seed": 0,
 	"sampleSize": 10000,
-	"distribution": "normal",
+	"distribution": "normalApproximated",
 	"binsCoefficient": 2
 }
